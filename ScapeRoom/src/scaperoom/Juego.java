@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,17 +18,14 @@ public class Juego {
 	
 	JFrame window;
 	Container con;
-	JPanel titleNamePanel, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, imagePanel, inventoryPanel;
-	JLabel titleNameLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName, imageLabel, counterLabel;
+	JPanel titleNamePanel, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, inventoryPanel;
+	JLabel titleNameLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName;
 	Font titleFont = new Font("Georgia", Font.PLAIN, 70);
 	Font normalFont = new Font("Georgia", Font.PLAIN, 26);
 	JButton startButton, choice1, choice2, choice3, choice4, inventoryButton, itemButton1, itemButton2, itemButton3, itemButton4, itemButton5;
 	JTextArea mainTextArea;
-	int playerHP, monsterHP, silverRing, i, second, minute;
-	String weapon, position, inventoryStatus, text, ddSecond, ddMinute;
-	
-	DecimalFormat dFormat = new DecimalFormat("00");
-
+	int playerHP, monsterHP, silverRing, i, option1;
+	String weapon, position, inventoryStatus, text;
 	
 	TitleScreenHandler tsHandler = new TitleScreenHandler();
 	ChoiceHandler choiceHandler = new ChoiceHandler();
@@ -213,7 +209,7 @@ public class Juego {
 			hpLabelNumber.setFont(normalFont);
 			hpLabelNumber.setForeground(Color.white);
 			playerPanel.add(hpLabelNumber);
-			weaponLabel = new JLabel ("Weapon:");
+			weaponLabel = new JLabel ("Tiempo:");
 			weaponLabel.setFont(normalFont);
 			weaponLabel.setForeground(Color.white);
 			playerPanel.add(weaponLabel);
@@ -223,32 +219,9 @@ public class Juego {
 			playerPanel.add(weaponLabelName);
 			
 			
+			
 			playerSetup();
 		}
-		
-
-			Timer countdownTimer = new Timer(1000, new ActionListener() {
-			
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					second--;
-					ddSecond = dFormat.format(second);
-					ddMinute = dFormat.format(minute);
-					counterLabel.setText(ddMinute + ":" + ddSecond);
-					
-					if(second == -1) {
-						second = 59;
-						minute--;
-						ddSecond = dFormat.format(second);
-						ddMinute = dFormat.format(minute);
-						counterLabel.setText(ddMinute + ":" + ddSecond);
-					}
-					if(minute == 0 && second == 0) {
-						countdownTimer.stop();
-					}
-				}
-			});
 		
 		
 		Timer timer = new Timer(50, new ActionListener() {
@@ -283,7 +256,7 @@ public class Juego {
 		public void playerSetup() {
 			playerHP = 15;
 			monsterHP = 20;
-			weapon = "Knife";
+			weapon = "";
 			
 			hpLabelNumber.setText("" + playerHP);
 			inventoryStatus = "Close";
@@ -294,7 +267,7 @@ public class Juego {
 			playerItem[2] = "";
 			playerItem[3] = "";
 			playerItem[4] = "";
-	
+			
 			introductionPartOne();
 		}
 		
@@ -323,7 +296,7 @@ public class Juego {
 		}
 		
 		public void introductionPartThree() {
-			position = "introductionParThree";
+			position = "introductionPartThree";
 			
 			text = "Voz desconocida: Tienes 5 minutos para vivir. Podras añadir tiempo cada vez que derrotes a uno de los enemigos que vas a encontrar aqui.";
 			prepareText();
@@ -349,31 +322,152 @@ public class Juego {
 		public void mainSquare() {
 			position = "mainSquare";
 			
-			//mainTextArea.setText("You are at the gate of the town. \nA guard is standing in front of you. \nA woman is standing on your left. \n\nWhat do you do?");
 			text = "Miras a tu alrededor, ves un camino a tu izquierda, otro delante y otro a tu derecha. \n\n¿Donde quieres ir?";
 			prepareText();
+			
 			choice1.setText("Ir a la izquierda");
 			choice2.setText("Ir a delante");
 			choice3.setText("Ir a la derecha");
 			choice4.setText("");
 		}
 		
-		public void leftWay() {
-			position = "leftWay";
+		public void leftWay1() {
+			position = "leftWay1";
 			
-			//mainTextArea.setText("Guard: Hello stranger. \nI have never seen your face. \nI'm sorry but we cannot let a stranger enter our town");
-			text = "Guard: Hello stranger. \nI have never seen your face. \nI'm sorry but we cannot let a stranger enter our town";
+			text = "Con cada paso que avanzas ves que el desierto del que venías va siendo consumido poco a poco por una ciudad.";
 			prepareText();
+			
 			choice1.setText(">");
 			choice2.setText("");
 			choice3.setText("");
 			choice4.setText("");
 		}
 		
+		public void leftWay2() {
+			position = "leftWay2";
+			
+			text = "Al principio solo ves edificios en ruinas y una carretera en muy mal estado, pero cuanto mas entras en ella empiezas a vislumbrar una gran ciudad con una edificacion que nunca antes habias visto y con una apariencia bastante futurista.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void leftWay3() {
+			position = "leftWay3";
+			
+			text = "Acabas llegando al cruce de una avenida. Piensas que es bastante parecida a Times Square pero con mucha más iluminación. \n\nNo, por mucho que se parezca a ese sitio, te recuerda a la plaza en la que estuviste al principio. Y esta igual de vacia.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void leftWay4() {
+			position = "leftWay4";
+			
+			text = "Te fijas bien y puedes distinguir otros 3 caminos. \nA tu izquierda hay una calle bastante oscura, con muy mal aspecto. \nA tu derecha hay una calle completamente contraria a la otra, perfectamente iluminada y con pinta de ser la zona más cara de la ciudad. \n Delante tuya hay una puerta gigante.";
+			prepareText();
+			
+			choice1.setText("Ir a delante");
+			choice2.setText("Ir a la izquierda");
+			choice3.setText("Ir a la derecha");
+			choice4.setText("Volver atrás");
+		}
+		
+		public void leftWayStraightNoItem() {
+			position = "leftWayStraightNoItem";
+			
+			text = "Te acercas a la puerta, no tiene ni pomo, casi no parece una puerta. Intentas empujarla pero no cede ni un milimetro.";
+			prepareText();
+				
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+			
+		public void leftWayStraightItem() {
+			position = "leftWayStraightItem";
+			
+		}
+		
+		public void leftWayLeft() {
+			position = "leftWayLeft";
+			
+			text = "Avanzas por esas calles estrechas y oscuras hasta que ves el letrero de una bar iluminado. Te acercas a el y entras, hay un hombre, probablemente tendrá unos 40 y algo pero parece bastante deteriorado";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void leftWayRight() {
+			position = "leftWayRight";
+			
+		}
+		
+		public void leftWayReturn() {
+			position = "leftWayReturn";
+			
+		}
+		
+		public void conversationLeft1() {
+			position = "conversationLeft1";
+			
+			text = "Hombre desconocido: ¿Quien eres tu? ¿Que haces aqui?.";
+			prepareText();
+			
+			choice1.setText("No se quien soy");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void conversationLeft2() {
+			position = "conversationLeft2";
+			
+			text = "Hombre desconocido: Espera... Tu eres... JAJAJAJA.";
+			prepareText();
+			
+			choice1.setText("¿Quien soy?");
+			choice2.setText("¿De que te ries? <Agresivo>");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void conversationLeft2Option1() {
+			position = "conversationLeft2Option1";
+			
+			text = "Hombre desconocido: Hey, no voy a ser yo quien arruine la sorpresa. \nBueno, tengo algo que vas a necesitar si quieres abrir la puerta";
+			prepareText();
+			
+			choice1.setText("Damelo");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void conversationLeft2Option2() {
+			position = "conversationLeft2Option2";
+			
+			text = "Hombre desconocido: Jajaja ¿Estas seguro de que quieres llevar esto así? Porque tengo algo que necesitas y si te pones asi no vas a conseguirlo.";
+			prepareText();
+			
+			choice1.setText("Damelo");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
 		public void attackGuard() {
 			position = "attackGuard";
 			
-			//mainTextArea.setText("Guard: Hey don't be stupid!\n \nguard fought back and hit you hard.\n(You receive 3 damage)");
 			text = "Guard: Hey don't be stupid!\n \nguard fought back and hit you hard.\n(You receive 3 damage)";
 			prepareText();
 			playerHP = playerHP - 3;
@@ -619,10 +713,55 @@ public class Juego {
 					break;
 				case "mainSquare":
 					switch(yourChoice) {
-					case "c1": leftWay(); break;
+					case "c1": leftWay1(); break;
 					case "c2": attackGuard(); break;
 					case "c3": talkWoman(); break;
 					case "c4": crossRoad(); break;
+					}
+					break;
+				case "leftWay1":
+					switch(yourChoice) {
+					case "c1": leftWay2(); break;
+					}
+					break;
+				case "leftWay2":
+					switch(yourChoice) {
+					case "c1": leftWay3(); break;
+					}
+					break;
+				case "leftWay3":
+					switch(yourChoice) {
+					case "c1": leftWay4(); break;
+					}
+					break;
+				case "leftWay4":
+					switch(yourChoice) {
+					case "c1": 
+						if(weapon == "pistola") {
+							leftWayStraightItem();
+						}
+						else {
+							leftWayStraightNoItem();
+						}
+						break;
+					case "c2": leftWayLeft(); break;
+					case "c3": leftWayRight(); break;
+					case "c4": leftWayReturn(); break;
+					}
+					break;
+				case "leftWayStraightNoItem":
+					switch(yourChoice) {
+					case "c1": leftWay4(); break;
+					}
+					break;
+				case "leftWayLeft":
+					switch(yourChoice) {
+					case "c1": conversationLeft1(); break;
+					}
+					break;
+				case "conversationLeft1":
+					switch(yourChoice) {
+					case "c1": break;
 					}
 					break;
 				case "talkGuard":
