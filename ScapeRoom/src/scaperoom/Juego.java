@@ -16,22 +16,25 @@ import javax.swing.Timer;
 
 public class Juego {
 	
-	JFrame window;
-	Container con;
-	JPanel titleNamePanel, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, inventoryPanel;
-	JLabel titleNameLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName;
-	Font titleFont = new Font("Georgia", Font.PLAIN, 70);
-	Font normalFont = new Font("Georgia", Font.PLAIN, 26);
-	JButton startButton, choice1, choice2, choice3, choice4, inventoryButton, itemButton1, itemButton2, itemButton3, itemButton4, itemButton5;
-	JTextArea mainTextArea;
-	int playerHP, monsterHP, silverRing, i, option1;
-	String weapon, position, inventoryStatus, text;
+	public int moves;
 	
-	TitleScreenHandler tsHandler = new TitleScreenHandler();
-	ChoiceHandler choiceHandler = new ChoiceHandler();
-	InventoryHandler iHandler = new InventoryHandler();
+	private JFrame window;
+	private Container con;
+	private JPanel titleNamePanel, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, inventoryPanel;
+	private JLabel titleNameLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName, movesLabel, movesLabelName;
+	private Font titleFont = new Font("Georgia", Font.PLAIN, 70);
+	private Font normalFont = new Font("Georgia", Font.PLAIN, 26);
+	private JButton startButton, choice1, choice2, choice3, choice4, inventoryButton, itemButton1, itemButton2, itemButton3, itemButton4, itemButton5;
+	private JTextArea mainTextArea;
+	private int playerHP, i;
+	private String weapon, position, inventoryStatus, text;
+	private boolean option = false, conversationLeftLeft = false, conversationLeftLeftFinished = false, conversationLeftRightFinished = false;
 	
-	String [] playerItem = new String[5];
+	private TitleScreenHandler tsHandler = new TitleScreenHandler();
+	private ChoiceHandler choiceHandler = new ChoiceHandler();
+	private InventoryHandler iHandler = new InventoryHandler();
+	
+	private String [] playerItem = new String[5];
 
 		
 		public Juego() {
@@ -52,7 +55,7 @@ public class Juego {
 			titleNamePanel = new JPanel();
 			titleNamePanel.setBounds(100, 100, 600, 150);
 			titleNamePanel.setBackground(Color.black);
-			titleNameLabel = new JLabel("PROVISIONAL");
+			titleNameLabel = new JLabel("LANOISIVORP");
 			titleNameLabel.setForeground(Color.white);
 			titleNameLabel.setFont(titleFont);
 			
@@ -209,7 +212,7 @@ public class Juego {
 			hpLabelNumber.setFont(normalFont);
 			hpLabelNumber.setForeground(Color.white);
 			playerPanel.add(hpLabelNumber);
-			weaponLabel = new JLabel ("Tiempo:");
+			weaponLabel = new JLabel ("Arma:");
 			weaponLabel.setFont(normalFont);
 			weaponLabel.setForeground(Color.white);
 			playerPanel.add(weaponLabel);
@@ -217,6 +220,14 @@ public class Juego {
 			weaponLabelName.setFont(normalFont);
 			weaponLabelName.setForeground(Color.white);
 			playerPanel.add(weaponLabelName);
+			movesLabel = new JLabel ("Pasos:");
+			movesLabel.setFont(normalFont);
+			movesLabel.setForeground(Color.white);
+			playerPanel.add(movesLabel);
+			movesLabelName = new JLabel();
+			movesLabelName.setFont(normalFont);
+			movesLabelName.setForeground(Color.white);
+			playerPanel.add(movesLabelName);
 			
 			
 			
@@ -254,16 +265,18 @@ public class Juego {
 		
 		
 		public void playerSetup() {
-			playerHP = 15;
-			monsterHP = 20;
+			playerHP = 30;
 			weapon = "";
+			moves = 20;
+			
 			
 			hpLabelNumber.setText("" + playerHP);
 			inventoryStatus = "Close";
 			weaponLabelName.setText(weapon);
+			movesLabelName.setText("" + moves);
 			
-			playerItem[0] = "Potion";
-			playerItem[1] = "Orange";
+			playerItem[0] = "";
+			playerItem[1] = "";
 			playerItem[2] = "";
 			playerItem[3] = "";
 			playerItem[4] = "";
@@ -331,6 +344,32 @@ public class Juego {
 			choice4.setText("");
 		}
 		
+		public void straightWay() {
+			position = "straightWay";
+			
+			mainTextArea.setText("No había tiempo para hacer más");
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void rightWay() {
+			position = "rightWay";
+			
+			text = "Pisas unos pinchos y pierdes mucha sangre";
+			prepareText();
+			
+			playerHP = playerHP - 30;
+			hpLabelNumber.setText("" + playerHP);
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
 		public void leftWay1() {
 			position = "leftWay1";
 			
@@ -394,6 +433,139 @@ public class Juego {
 		public void leftWayStraightItem() {
 			position = "leftWayStraightItem";
 			
+			text = "La puerta se abre. Comienzas a andar por un pasillo, es estrecho. \n\nLlegas a un salon enorme y en el medio hay un hombre vestido de negro.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void ending1() {
+			position = "ending1";
+			
+			text = "La puerta se abre. Comienzas a andar por un pasillo, es estrecho. \n\nLlegas a un salon enorme y en el medio hay un hombre vestido de negro de espaldas.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void ending2() {
+			position = "ending2";
+			
+			text = "???: No sabía si llegarías. \n\nSe gira y... \nTu: Te encuentras mirandote a ti mismo";
+			prepareText();
+			
+			choice1.setText("Eres... ¿Yo?");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void ending3() {
+			position = "ending3";
+			
+			text = "Tu: Si, bueno, soy nuestro yo principal y también el narrador. \nNo se como no te has extrañado de escuchar una voz en tu cabeza.";
+			prepareText();
+			
+			choice1.setText("No entiendo nada");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void ending4() {
+			position = "ending4";
+			
+			text = "Tu: Es sencillo. Necesitamos un cambio de personalidad y estoy probandoos";
+			prepareText();
+			
+			choice1.setText("¿Y que pasa ahora?");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void neutralEnding1() {
+			position = "neutralEnding1";
+			
+			text = "Tu: Bueno, has pasado todas las pruebas, así que solo queda la última. Coge la pistola y matame";
+			prepareText();
+			
+			choice1.setText("DISPARA");
+			choice2.setText("No hagas nada");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void neutralEnding2() {
+			position = "neutralEndingShoot2";
+			
+			text = "Tu: Vaya, que decepción, pensaba que serías el indicado supongo que habrá que seguir buscando... Donde vas es oscuro, pero estarás bien, tranquilo";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void goodEnding1() {
+			position = "goodEnding1";
+			
+			text = "Tu: Bien, no esperaba menos, a partir de ahora tu llevas el mando. Permiteme despedirme usando la narracion, queda mejor.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void goodEnding2() {
+			position = "goodEnding2";
+			
+			text = "Tu yo desaparece y tu te quedas encerrado en esa habitación. Espero que lo hagas bien.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void badEnding() {
+			position = "badEnding";
+			
+			text = "Bueno, mataste a ese pobre hombre. Asi que estás fuera. Sayonara.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void lameEnding() {
+			position = "lameEnding";
+			
+			text = "¿De verdad? Pensaba que era imposible, ya veo que no";
+			prepareText();
+			
+			choice1.setVisible(false);
+			choice2.setVisible(false);
+			choice3.setVisible(false);
+			choice4.setVisible(false);
+		}
+		
+		public void ending() {
+			position = "ending";
+			
+			titleNameLabel.setText("FIN");
 		}
 		
 		public void leftWayLeft() {
@@ -408,15 +580,61 @@ public class Juego {
 			choice4.setText("");
 		}
 		
-		public void leftWayRight() {
-			position = "leftWayRight";
+		public void leftWayRight1() {
+			position = "leftWayRight1";
 			
+			text = "Avanzas y no tardas mucho en encontrarte a un señor de unos 30 años, bien vestido, parece adinerado.";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
 		}
 		
-		public void leftWayReturn() {
-			position = "leftWayReturn";
+		public void leftWayRight2() {
+			position = "leftWayRight2";
 			
+			text = "Hombre desconocido: Oh hola, tu eres El, ¿no?";
+			prepareText();
+			
+			choice1.setText("¿El?");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
 		}
+		
+		public void leftWayRight3() {
+			position = "leftWayRight3";
+			
+			text = "Ah si, se me había olvidado que no podías saber nada. \nEntonces acabemos rápido. \n\n";
+			prepareText();
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
+		public void leftWayRight4() {
+			position = "leftWayRight4";
+			
+			int slotNumber = 0;
+			
+			text = "Hombre desconocido: Toma. \n\n<Recibes 'Estrella de oro' y 'Pocion'>";
+			prepareText();
+			
+			playerItem[slotNumber] = "Pocion";
+			playerItem[slotNumber+1] = "Estrella de oro";
+			
+			conversationLeftRightFinished = true;
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
+		
 		
 		public void conversationLeft1() {
 			position = "conversationLeft1";
@@ -428,6 +646,8 @@ public class Juego {
 			choice2.setText("");
 			choice3.setText("");
 			choice4.setText("");
+			
+			conversationLeftLeft = true;
 		}
 		
 		public void conversationLeft2() {
@@ -437,7 +657,7 @@ public class Juego {
 			prepareText();
 			
 			choice1.setText("¿Quien soy?");
-			choice2.setText("¿De que te ries? <Agresivo>");
+			choice2.setText("¿De que te ries?");
 			choice3.setText("");
 			choice4.setText("");
 		}
@@ -445,7 +665,7 @@ public class Juego {
 		public void conversationLeft2Option1() {
 			position = "conversationLeft2Option1";
 			
-			text = "Hombre desconocido: Hey, no voy a ser yo quien arruine la sorpresa. \nBueno, tengo algo que vas a necesitar si quieres abrir la puerta";
+			text = "Hombre desconocido: Hey, no voy a ser yo quien arruine la sorpresa. \nBueno, tengo cosas que vas a necesitar si quieres abrir la puerta";
 			prepareText();
 			
 			choice1.setText("Damelo");
@@ -457,7 +677,7 @@ public class Juego {
 		public void conversationLeft2Option2() {
 			position = "conversationLeft2Option2";
 			
-			text = "Hombre desconocido: Jajaja ¿Estas seguro de que quieres llevar esto así? Porque tengo algo que necesitas y si te pones asi no vas a conseguirlo.";
+			text = "Hombre desconocido: Jajaja ¿Estas seguro de que quieres llevar esto así? Porque tengo cosas que necesitas y si te pones asi no vas a conseguirlo.";
 			prepareText();
 			
 			choice1.setText("Damelo");
@@ -465,127 +685,159 @@ public class Juego {
 			choice3.setText("");
 			choice4.setText("");
 		}
-		public void attackGuard() {
-			position = "attackGuard";
-			
-			text = "Guard: Hey don't be stupid!\n \nguard fought back and hit you hard.\n(You receive 3 damage)";
+		
+		public void conversationLeft3() {
+			position = "conversationLeft3";
+	
+				
+			text = "Hombre desconocido: Si lo quieres tendras que pagarme una estrella de oro";
 			prepareText();
-			playerHP = playerHP - 3;
-			hpLabelNumber.setText("" + playerHP);
-			
-			choice1.setText(">");
-			choice2.setText("");
+				
+			choice1.setText("Pagar");
+			choice2.setText("Atacar");
 			choice3.setText("");
-			choice4.setText("");
+			choice4.setText("Salir");
+			
 		}
 		
-		public void talkWoman() {
-			position = "talkWoman";
+		public void conversationLeft4() {
+			position = "conversationLeft4";
+			
+			text = "Hombre desconocido: ¿Ya estas de vuelta? ¿Vas a pagar ya?";
+			prepareText();
+			
+			choice1.setText("Pagar");
+			choice2.setText("Atacar");
+			choice3.setText("");
+			choice4.setText("Salir");
+		}
+		
+		public void pay() {
+			position = "pay";
 			
 			int slotNumber = 0;
-			while(playerItem[slotNumber] != "" && slotNumber < 4) {
+			
+			if(playerItem[0] == "Estrella de oro" || playerItem[1] == "Estrella de oro" || playerItem[2] == "Estrella de oro" ||playerItem[3] == "Estrella de oro" || playerItem[4] == "Estrella de oro") {
+			
+				text = "Hombre desconocido: Buena eleccion. Aqui tienes chaval, \n\n <Recibes 'Pistola' y 'Orbe'>";
+				prepareText();
+				
+				playerItem[slotNumber] = "";
+			
+				while(playerItem[slotNumber] != "") {
+					slotNumber++;
+				}
+				
+				weapon = "Pistola";
+				playerItem[slotNumber] = "Orbe";
+			
+				conversationLeftLeftFinished = true;
+				
+				choice1.setText(">");
+				choice2.setText("");
+				choice3.setText("");
+				choice4.setText("");
+			}
+			else {
+				text = "Hombre desconocido: Pero si no tienes para pagar, vuelve cuando lo tengas.";
+				prepareText();
+				
+				choice1.setText(">");
+				choice2.setText("");
+				choice3.setText("");
+				choice4.setText("");
+			}
+		}
+		
+		public void attackLeft1() {
+			position = "attackLeft1";
+			
+			text = "Te lanzas sobre el y comienzas a pegarle";
+			prepareText();
+			
+			option = true;
+			
+			choice1.setText("PEGAR");
+			choice2.setText("PEGAR");
+			choice3.setText("PEGAR");
+			choice4.setText("PEGAR");
+		}
+		
+		public void attackLeft2() {
+			position = "attackLeft2";
+		
+			int x = 0;
+			
+			while(x<3) {
+				text = "SIGUE PEGANDO";
+				prepareText();
+				
+				playerHP = playerHP + 212;
+				hpLabelNumber.setText("" + playerHP);
+				x++;
+			}
+			
+			choice1.setText("SIGUE");
+			choice2.setText("SIGUE");
+			choice3.setText("SIGUE");
+			choice4.setText("SIGUE");
+		}
+		
+		public void attackLeft3() {
+			position = "attackLeft3";
+		
+			int x = 0;
+			
+			while(x<3) {
+				text = "NO PARES";
+				prepareText();
+				
+				playerHP = playerHP + 111;
+				hpLabelNumber.setText("" + playerHP);
+				x++;
+			}
+			
+			choice1.setText("SIGUE");
+			choice2.setText("SIGUE");
+			choice3.setText("SIGUE");
+			choice4.setText("SIGUE");
+		}
+		
+		public void attackLeft4() {
+			position = "attackLeft4";
+			
+			int x = 0;
+			
+			while(x<3) {
+				text = "Suficiente";
+				prepareText();
+				
+				playerHP = playerHP - 323;
+				hpLabelNumber.setText("" + playerHP);
+				x++;
+			}
+			
+			choice1.setText("...");
+			choice2.setText("...");
+			choice3.setText("...");
+			choice4.setText("...");
+		}
+		
+		public void reward() {
+			position = "reward";
+			
+			int slotNumber = 0;
+			
+			text = "Lo has matado. \n\nMiras a tu alrededor en busca de los objetos. \nEn el suelo encuentras una pistola y un orbe. \n\n<Obtienes 'Pistola' y 'Orbe'>";
+			prepareText();
+			
+			while(playerItem[slotNumber] != "") {
 				slotNumber++;
 			}
 			
-			if(playerItem[slotNumber]=="") {
-				//mainTextArea.setText("Woman: You look hungry, take this. \n(You received orange)");
-				text = "Woman: You look hungry, take this. \n(You received orange)";
-				prepareText();
-				playerItem[slotNumber] = "Orange";
-			}
-			else if(playerItem[slotNumber]!= "") {
-				//mainTextArea.setText("Woman: It seems you cannot carry anymore");
-				text = "Woman: It seems you cannot carry anymore";
-				prepareText();
-			}
-			
-			choice1.setText(">");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-			
-		}
-		
-		public void crossRoad() {
-			position = "crossRoad";
-			
-			text = "You are at a crossroad. \nIf you go South, you will go back to the town.";
-			prepareText();
-			
-			choice1.setText("Go North");
-			choice2.setText("Go East");
-			choice3.setText("Go South");
-			choice4.setText("Go West");
-		}
-		
-		public void north() {
-			position = "north";
-			
-			text = "There is a river. \nYou drink the water and rest at the riverside. \n\n(Your HP is recovered by 2)";
-			prepareText();	
-			playerHP = playerHP + 2;
-			hpLabelNumber.setText("" + playerHP);
-			
-			choice1.setText("Go South");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-		}
-		
-		public void east() {
-			position = "east";
-			
-			text = "You walked into a forest and found a Long Sword!\n\n(You obtainer a Long Sword)";
-			prepareText();
-			weapon = "Long Sword";
-			weaponLabelName.setText(weapon);
-			
-			choice1.setText("Go West");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-		}	
-		
-		public void west() {
-			position = "west";
-			
-			text  ="You encounter a goblin!";
-			prepareText();
-			
-			choice1.setText("Fight");
-			choice2.setText("Run");
-			choice3.setText("");
-			choice4.setText("");
-		}
-		
-		public void fight() {
-			position = "fight";
-			
-			text = "Monster HP: " + monsterHP +"\n\nWhat do you do?";
-			prepareText();
-			
-			choice1.setText("Attack");
-			choice2.setText("Run");
-			choice3.setText("");
-			choice4.setText("");
-		}
-		
-		public void playerAttack() {
-			position = "playerAttack";
-			
-			int playerDamage = 0;
-			
-			if(weapon.equals("Knife")) {
-				playerDamage = new java.util.Random().nextInt(3);
-			}
-			else if(weapon.equals("Long Sword")) {
-				playerDamage = new java.util.Random().nextInt(12);
-			}
-			
-			text = "You attacked the monster and gave " + playerDamage + " damage!";
-			prepareText();
-			
-			monsterHP = monsterHP - playerDamage;
+			weapon = "Pistola";
+			playerItem[slotNumber] = "Orbe";
+			conversationLeftLeftFinished = true;
 			
 			choice1.setText(">");
 			choice2.setText("");
@@ -593,78 +845,24 @@ public class Juego {
 			choice4.setText("");
 		}
 		
-		public void monsterAttack() {
-			position = "monsterAttack";
+		public void leftWayClosed() {
+			position = "leftWayClosed";
 			
-			int monsterDamage = 0;
-			
-			monsterDamage = new java.util.Random().nextInt(6);
-			
-			text = "The monster attacked you and gave " + monsterDamage + " damage!";
+			text = "No tienes motivos para ir allí";
 			prepareText();
-			
-			playerHP = playerHP - monsterDamage;
-			hpLabelNumber.setText("" + playerHP);
 			
 			choice1.setText(">");
 			choice2.setText("");
 			choice3.setText("");
 			choice4.setText("");
-		}
-		
-		public void win() {
-			position = "win";
-			
-			text = "You defeated the monster!\nThe monster dropped a ring!\n\n(You obtained a Silver Ring)";
-			prepareText();
-			
-			silverRing = 1;
-			
-			choice1.setText("Go East");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-		}
-		
-		public void lose() {
-			position = "lose";
-			
-			text = "You are dead!\n\n<GAME OVER>";
-			prepareText();
-			
-			choice1.setText("Reintentar");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-		}
-		
-		public void ending() {
-			position = "ending";
-			
-			text = "Guard: Oh you killed that goblin!?\nThank you so much. You are true hero!\nWelcome to our town!\n\n<THE END>";
-			prepareText();
-			
-			choice1.setText("");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-			choice1.setVisible(false);
-			choice2.setVisible(false);
-			choice3.setVisible(false);
-			choice4.setVisible(false);
 		}
 		
 		public void itemUsed(int slotNumber) {
 			
 			switch(playerItem[slotNumber]) {
-			case "Potion":
-				playerHP = playerHP +10;
+			case "Pocion":
+				playerHP = playerHP + 10;
 				hpLabelNumber.setText(""+playerHP);
-				playerItem[slotNumber] = "";
-				break;
-			case "Orange":
-				playerHP = playerHP -2;
-				hpLabelNumber.setText("" + playerHP);
 				playerItem[slotNumber] = "";
 				break;
 			case "":
@@ -714,9 +912,24 @@ public class Juego {
 				case "mainSquare":
 					switch(yourChoice) {
 					case "c1": leftWay1(); break;
-					case "c2": attackGuard(); break;
-					case "c3": talkWoman(); break;
-					case "c4": crossRoad(); break;
+					case "c2": straightWay(); break;
+					case "c3": rightWay(); break;
+					}
+					break;
+				case "straightWay":
+					switch(yourChoice) {
+					case "c1": mainSquare(); break;
+					}
+					break;
+				case "rightWay":
+					switch(yourChoice) {
+					case "c1": 
+						if(playerHP == 0) {
+							lameEnding();
+						}
+						else {
+							mainSquare();
+						}
 					}
 					break;
 				case "leftWay1":
@@ -744,14 +957,91 @@ public class Juego {
 							leftWayStraightNoItem();
 						}
 						break;
-					case "c2": leftWayLeft(); break;
-					case "c3": leftWayRight(); break;
-					case "c4": leftWayReturn(); break;
+					case "c2": 
+						if(conversationLeftLeft == true && conversationLeftLeftFinished == false) {
+							conversationLeft4(); 
+						}
+						else {
+							if(conversationLeftLeft == true && conversationLeftLeftFinished == true){
+								leftWayClosed();
+							}
+							else {
+								leftWayLeft();
+							}
+						}
+						break;
+					case "c3":
+						if(conversationLeftRightFinished == true) {
+							leftWayClosed();
+						}
+						else {
+							leftWayRight1();
+						}
+						break;
+					case "c4": mainSquare(); break;
 					}
 					break;
 				case "leftWayStraightNoItem":
 					switch(yourChoice) {
 					case "c1": leftWay4(); break;
+					}
+					break;
+				case "leftWayStraightItem":
+					switch(yourChoice) {
+					case "c1": ending1(); break;
+					}
+					break;
+				case "ending1":
+					switch(yourChoice) {
+					case "c1": ending2(); break;
+					}
+					break;
+				case "ending2":
+					switch(yourChoice) {
+					case "c1": ending3(); break;
+					}
+					break;
+				case "ending3":
+					switch(yourChoice) {
+					case "c1": ending4(); break;
+					}
+					break;
+				case "ending4":
+					switch(yourChoice) {
+					case "c1": 
+						if(option == true) {
+							badEnding();
+						}
+						else {
+							neutralEnding1();
+						}
+						break;
+					}
+					break;
+				case "badEnding":
+					switch(yourChoice) {
+					case "c1": ending(); break;
+					}
+					break;
+				case "neutralEnding1":
+					switch(yourChoice) {
+					case "c1": neutralEnding2(); break;
+					case "c2": goodEnding1(); break;
+					}
+					break;
+				case "NeutralEnding2":
+					switch(yourChoice) {
+					case "c1": ending(); break;
+					}
+					break;
+				case "goodEnding1":
+					switch(yourChoice) {
+					case "c1": goodEnding2(); break;
+					}
+					break;
+				case "goodEnding2":
+					switch(yourChoice) {
+					case "c1": ending(); break;
 					}
 					break;
 				case "leftWayLeft":
@@ -761,7 +1051,101 @@ public class Juego {
 					break;
 				case "conversationLeft1":
 					switch(yourChoice) {
-					case "c1": break;
+					case "c1": conversationLeft2(); break;
+					}
+					break;
+				case "conversationLeft2":
+					switch(yourChoice) {
+					case "c1": conversationLeft2Option1(); break;
+					case "c2": conversationLeft2Option2(); break;
+					}
+					break;
+				case "conversationLeft2Option1":
+					switch(yourChoice) {
+					case "c1": conversationLeft3(); break;
+					}
+					break;
+				case "conversationLeft2Option2":
+					switch(yourChoice) {
+					case "c1": conversationLeft3(); break;
+					}
+					break;
+				case "conversationLeft3":
+					switch(yourChoice) {
+					case "c1": pay(); break;
+					case "c2": attackLeft1(); break;
+					case "c4": leftWay4(); break;
+					}
+					break;
+				case "conversationLeft4":
+					switch(yourChoice) {
+					case "c1": pay(); break;
+					case "c2": attackLeft1(); break;
+					case "c4": leftWay4(); break;
+					}
+					break;
+				case "pay":
+					switch(yourChoice) {
+					case "c1": leftWay4(); break;
+					}
+					break;
+				case "attackLeft1":
+					switch(yourChoice) {
+					case "c1": attackLeft2(); break;
+					case "c2": attackLeft2(); break;
+					case "c3": attackLeft2(); break;
+					case "c4": attackLeft2(); break;
+					}
+					break;
+				case "attackLeft2":
+					switch(yourChoice) {
+					case "c1": attackLeft3(); break;
+					case "c2": attackLeft3(); break;
+					case "c3": attackLeft3(); break;
+					case "c4": attackLeft3(); break;
+					}
+					break;
+				case "attackLeft3":
+					switch(yourChoice) {
+					case "c1": attackLeft4(); break;
+					case "c2": attackLeft4(); break;
+					case "c3": attackLeft4(); break;
+					case "c4": attackLeft4(); break;
+					}
+					break;
+				case "attackLeft4":
+					switch(yourChoice) {
+					case "c1": reward(); break;
+					}
+					break;
+				case "reward":
+					switch(yourChoice) {
+					case "c1": leftWay4(); break;
+					}
+					break;
+				case "leftWayClosed":
+					switch(yourChoice) {
+					case "c1": leftWay4(); break;
+					}
+					break;
+				case "leftWayRight1":
+					switch(yourChoice) {
+					case "c1": leftWayRight2(); break;
+					}
+					break;
+				case "leftWayRight2":
+					switch(yourChoice) {
+					case "c1": leftWayRight3(); break;
+					}
+					break;
+				case "leftWayRight3":
+					switch(yourChoice) {
+					case "c1": leftWayRight4(); break;
+					}
+					break;
+				case "leftWayRight4":
+					switch(yourChoice) {
+					case "c1": leftWay4(); break;
 					}
 					break;
 				case "talkGuard":
@@ -769,79 +1153,7 @@ public class Juego {
 					case "c1": mainSquare(); break;
 					}
 					break;
-				case "attackGuard":
-					switch(yourChoice) {
-					case "c1": mainSquare(); break;
-					}
-					break;
-				case "talkWoman":
-					switch(yourChoice) {
-					case "c1": mainSquare(); break;
-					}
-					break;
-				case "crossRoad":
-					switch(yourChoice) {
-					case "c1": north(); break;
-					case "c2": east(); break;
-					case "c3": mainSquare(); break;
-					case "c4": west(); break;
-					}
-					break;
-				case "north":
-					switch(yourChoice){
-						case "c1": crossRoad(); break;
-					}
-					break;
-				case "east":
-					switch(yourChoice) {
-				    case "c1": crossRoad(); break;
-				    }
-					break;
-				case "west":
-					switch(yourChoice) {
-					case "c1": fight(); break;
-					case "c2": crossRoad(); break;
-					}
-					break;
-				case "fight":
-					switch(yourChoice) {
-					case "c1": playerAttack();break;
-					case "c2": crossRoad(); break;
-					}
-					break;
-				case "playerAttack":
-					switch(yourChoice) {
-					case "c1":
-						if(monsterHP < 1) {
-							win();
-						}
-						else {
-							monsterAttack();
-						}
-						break;
-					}
-					break;
-				case "monsterAttack":
-					switch(yourChoice) {
-					case "c1": 
-						if(playerHP<1) {
-							lose();
-						}
-						else {
-							fight();
-						}
-						break;
-					}
-					break;
-				case "win":
-					switch(yourChoice) {
-					case "c1": crossRoad(); break;
-					}
-					break;
-				case "lose":
-					switch(yourChoice) {
-					case "c1":; break;
-					}
+				
 				}
 			}
 			
