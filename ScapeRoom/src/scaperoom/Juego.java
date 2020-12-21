@@ -16,8 +16,7 @@ import javax.swing.Timer;
 
 public class Juego {
 	
-	public int moves;
-	
+	//Declaramos las variables
 	private JFrame window;
 	private Container con;
 	private JPanel titleNamePanel, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, inventoryPanel;
@@ -26,7 +25,7 @@ public class Juego {
 	private Font normalFont = new Font("Georgia", Font.PLAIN, 26);
 	private JButton startButton, choice1, choice2, choice3, choice4, inventoryButton, itemButton1, itemButton2, itemButton3, itemButton4, itemButton5;
 	private JTextArea mainTextArea;
-	private int playerHP, i;
+	private int playerHP, i, moves;
 	private String weapon, position, inventoryStatus, text;
 	private boolean option = false, conversationLeftLeft = false, conversationLeftLeftFinished = false, conversationLeftRightFinished = false;
 	
@@ -36,7 +35,7 @@ public class Juego {
 	
 	private String [] playerItem = new String[5];
 
-		
+		//En este metodo creamos la pestaña
 		public Juego() {
 		
 			window = new JFrame();
@@ -50,8 +49,10 @@ public class Juego {
 			startMenu();
 		}
 		
+		//En este metodo creamos el menu inicial y la distribucion de los elementos que se van a mostrar en pantalla
 		public void startMenu() {
 			
+			//Aqui creamos el titulo del juego
 			titleNamePanel = new JPanel();
 			titleNamePanel.setBounds(100, 100, 600, 150);
 			titleNamePanel.setBackground(Color.black);
@@ -59,11 +60,13 @@ public class Juego {
 			titleNameLabel.setForeground(Color.white);
 			titleNameLabel.setFont(titleFont);
 			
+			//Aqui creamos el espacio en el que se va a mostrar el boton de inicio del juego
 			startButtonPanel = new JPanel();
 			startButtonPanel.setBounds(300, 400, 200, 100);
 			startButtonPanel.setBackground(Color.black);
 			
-			startButton = new JButton("START");
+			//Aqui creamos el boton de inicio del juego
+			startButton = new JButton("INICIAR");
 			startButton.setBackground(Color.black);
 			startButton.setForeground(Color.white);
 			startButton.setFont(normalFont);
@@ -76,11 +79,15 @@ public class Juego {
 			con.add(startButtonPanel);
 		}
 		
+		
+		//Creamos/Configuramos la pantalla del juego	
 		public void createGameScreen(){
 			
+			//Ocultamos la pantalla anterior
 			titleNamePanel.setVisible(false);
 			startButtonPanel.setVisible(false);
 			
+			//creamos nuevos paneles para crear la pantalla que estará durante todo el juego
 			mainTextPanel = new JPanel();
 			mainTextPanel.setBounds(100, 100, 600, 250);
 			mainTextPanel.setBackground(Color.black);
@@ -94,6 +101,7 @@ public class Juego {
 			mainTextArea.setLineWrap(true);
 			mainTextPanel.add(mainTextArea);
 			
+			//Creamos los botones
 			choiceButtonPanel = new JPanel();
 			choiceButtonPanel.setBounds(250, 350, 300, 200);
 			choiceButtonPanel.setBackground(Color.black);
@@ -136,6 +144,7 @@ public class Juego {
 			choice4.setActionCommand("c4");
 			choiceButtonPanel.add(choice4);
 			
+			//Creamos el boton del inventario y sus botones
 			inventoryButton = new JButton("[Inventory]");
 			inventoryButton.setBackground(Color.black);
 			inventoryButton.setForeground(Color.yellow);
@@ -199,10 +208,11 @@ public class Juego {
 			
 			inventoryPanel.setVisible(false);
 			
+			//Creamos los datos de la barra superior
 			playerPanel = new JPanel();
 			playerPanel.setBounds(100, 15, 600, 50);
 			playerPanel.setBackground(Color.black);
-			playerPanel.setLayout(new GridLayout(1, 4));
+			playerPanel.setLayout(new GridLayout(1, 6));
 			con.add(playerPanel);
 			hpLabel = new JLabel("HP:");
 			hpLabel.setFont(normalFont);
@@ -234,7 +244,7 @@ public class Juego {
 			playerSetup();
 		}
 		
-		
+		//Metodo para que las letras salgan una por una
 		Timer timer = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -257,13 +267,14 @@ public class Juego {
 			}
 		});
 		
+		//Metodo para iniciar el timer del metodo anterior y dejar en blanco la zona del texto para poder sustituirla por lo que escribamos en la variable text
 			public void prepareText() {
 				i = 0;
 				mainTextArea.setText("");
 				timer.start();
 			}
 		
-		
+		//Metodo para configurar los datos de estado
 		public void playerSetup() {
 			playerHP = 30;
 			weapon = "";
@@ -284,6 +295,8 @@ public class Juego {
 			introductionPartOne();
 		}
 		
+		
+		//Metodos para mostrar historia
 		public void introductionPartOne() {
 			position = "introductionPartOne";
 			
@@ -299,7 +312,7 @@ public class Juego {
 		public void introductionPartTwo() {
 			position = "introductionPartTwo";
 			
-			text = "Voz desconocida: Bienvenido. Se que ahora mismo tendras muchas preguntas, pero todo sera respondido en su momento. Ahora simplemente prestame atencion.";
+			text = "Voz desconocida: Bienvenido. Se que ahora mismo tendras muchas \npreguntas, pero todo sera respondido en su momento. \nAhora simplemente prestame atencion.";
 			prepareText();
 			
 			choice1.setText(">");
@@ -311,7 +324,7 @@ public class Juego {
 		public void introductionPartThree() {
 			position = "introductionPartThree";
 			
-			text = "Voz desconocida: Tienes 5 minutos para vivir. Podras añadir tiempo cada vez que derrotes a uno de los enemigos que vas a encontrar aqui.";
+			text = "Voz desconocida: Tienes 1 hora para vivir.";
 			prepareText();
 			
 			choice1.setText(">");
@@ -323,7 +336,7 @@ public class Juego {
 		public void introductionPartFour() {
 			position = "introductionPartFour";
 			
-			text = "Voz desconocida: Si sigues cualquier camino llegaras a uno de tus rivales. Buena suerte, la vas a necesitar";
+			text = "Voz desconocida: Buena suerte, la vas a necesitar";
 			prepareText();
 			
 			choice1.setText(">");
@@ -335,7 +348,7 @@ public class Juego {
 		public void mainSquare() {
 			position = "mainSquare";
 			
-			text = "Miras a tu alrededor, ves un camino a tu izquierda, otro delante y otro a tu derecha. \n\n¿Donde quieres ir?";
+			text = "Miras a tu alrededor, ves un camino a tu izquierda, \notro delante y otro a tu derecha. \n\n¿Donde quieres ir?";
 			prepareText();
 			
 			choice1.setText("Ir a la izquierda");
@@ -348,6 +361,9 @@ public class Juego {
 			position = "straightWay";
 			
 			mainTextArea.setText("No había tiempo para hacer más");
+			
+			moves--;
+			movesLabelName.setText("" + moves);
 			
 			choice1.setText(">");
 			choice2.setText("");
@@ -364,6 +380,9 @@ public class Juego {
 			playerHP = playerHP - 30;
 			hpLabelNumber.setText("" + playerHP);
 			
+			moves--;
+			movesLabelName.setText("" + moves);
+			
 			choice1.setText(">");
 			choice2.setText("");
 			choice3.setText("");
@@ -373,8 +392,11 @@ public class Juego {
 		public void leftWay1() {
 			position = "leftWay1";
 			
-			text = "Con cada paso que avanzas ves que el desierto del que venías va siendo consumido poco a poco por una ciudad.";
+			text = "Con cada paso que avanzas ves que el desierto del \nque venías va siendo consumido poco a poco por una ciudad.";
 			prepareText();
+			
+			moves--;
+			movesLabelName.setText("" + moves);
 			
 			choice1.setText(">");
 			choice2.setText("");
@@ -385,7 +407,7 @@ public class Juego {
 		public void leftWay2() {
 			position = "leftWay2";
 			
-			text = "Al principio solo ves edificios en ruinas y una carretera en muy mal estado, pero cuanto mas entras en ella empiezas a vislumbrar una gran ciudad con una edificacion que nunca antes habias visto y con una apariencia bastante futurista.";
+			text = "Al principio solo ves edificios en ruinas y \nuna carretera en muy mal estado, pero cuanto mas \nentras en ella empiezas a vislumbrar una gran ciudad \ncon una edificacion que nunca antes habias visto \ny con una apariencia bastante futurista.";
 			prepareText();
 			
 			choice1.setText(">");
@@ -397,7 +419,7 @@ public class Juego {
 		public void leftWay3() {
 			position = "leftWay3";
 			
-			text = "Acabas llegando al cruce de una avenida. Piensas que es bastante parecida a Times Square pero con mucha más iluminación. \n\nNo, por mucho que se parezca a ese sitio, te recuerda a la plaza en la que estuviste al principio. Y esta igual de vacia.";
+			text = "Acabas llegando al cruce de una avenida. \nPiensas que es bastante parecida a Times Square pero con \nmucha más iluminación. \n\nNo, por mucho que se parezca a ese sitio, te recuerda a la plaza en la que estuviste al principio. Y esta igual de vacia.";
 			prepareText();
 			
 			choice1.setText(">");
@@ -421,8 +443,11 @@ public class Juego {
 		public void leftWayStraightNoItem() {
 			position = "leftWayStraightNoItem";
 			
-			text = "Te acercas a la puerta, no tiene ni pomo, casi no parece una puerta. Intentas empujarla pero no cede ni un milimetro.";
+			text = "Te acercas a la puerta, no tiene ni pomo, \ncasi no parece una puerta. Intentas empujarla \npero no cede ni un milimetro.";
 			prepareText();
+			
+			moves--;
+			movesLabelName.setText("" + moves);
 				
 			choice1.setText(">");
 			choice2.setText("");
@@ -433,8 +458,11 @@ public class Juego {
 		public void leftWayStraightItem() {
 			position = "leftWayStraightItem";
 			
-			text = "La puerta se abre. Comienzas a andar por un pasillo, es estrecho. \n\nLlegas a un salon enorme y en el medio hay un hombre vestido de negro.";
+			text = "La puerta se abre. Comienzas a andar por un \npasillo, es estrecho. \n\nLlegas a un salon enorme y en el medio hay un hombre vestido de negro.";
 			prepareText();
+			
+			moves--;
+			movesLabelName.setText("" + moves);
 			
 			choice1.setText(">");
 			choice2.setText("");
@@ -445,18 +473,6 @@ public class Juego {
 		public void ending1() {
 			position = "ending1";
 			
-			text = "La puerta se abre. Comienzas a andar por un pasillo, es estrecho. \n\nLlegas a un salon enorme y en el medio hay un hombre vestido de negro de espaldas.";
-			prepareText();
-			
-			choice1.setText(">");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-		}
-		
-		public void ending2() {
-			position = "ending2";
-			
 			text = "???: No sabía si llegarías. \n\nSe gira y... \nTu: Te encuentras mirandote a ti mismo";
 			prepareText();
 			
@@ -466,10 +482,10 @@ public class Juego {
 			choice4.setText("");
 		}
 		
-		public void ending3() {
-			position = "ending3";
+		public void ending2() {
+			position = "ending2";
 			
-			text = "Tu: Si, bueno, soy nuestro yo principal y también el narrador. \nNo se como no te has extrañado de escuchar una voz en tu cabeza.";
+			text = "Tu: Si, bueno, soy nuestro yo principal y también el \nnarrador. \nNo se como no te has extrañado de escuchar una voz en tu cabeza.";
 			prepareText();
 			
 			choice1.setText("No entiendo nada");
@@ -478,10 +494,10 @@ public class Juego {
 			choice4.setText("");
 		}
 		
-		public void ending4() {
-			position = "ending4";
+		public void ending3() {
+			position = "ending3";
 			
-			text = "Tu: Es sencillo. Necesitamos un cambio de personalidad y estoy probandoos";
+			text = "Tu: Es sencillo. Necesitamos un cambio de \npersonalidad y estoy probandoos";
 			prepareText();
 			
 			choice1.setText("¿Y que pasa ahora?");
@@ -493,7 +509,7 @@ public class Juego {
 		public void neutralEnding1() {
 			position = "neutralEnding1";
 			
-			text = "Tu: Bueno, has pasado todas las pruebas, así que solo queda la última. Coge la pistola y matame";
+			text = "Tu: Bueno, has pasado todas las pruebas, \nasí que solo queda la última. Coge la \npistola y matame";
 			prepareText();
 			
 			choice1.setText("DISPARA");
@@ -505,7 +521,7 @@ public class Juego {
 		public void neutralEnding2() {
 			position = "neutralEndingShoot2";
 			
-			text = "Tu: Vaya, que decepción, pensaba que serías el indicado supongo que habrá que seguir buscando... Donde vas es oscuro, pero estarás bien, tranquilo";
+			text = "Tu: Vaya, que decepción, pensaba que serías \nel indicado supongo que habrá que seguir buscando... Donde \nvas es oscuro, pero estarás bien, tranquilo";
 			prepareText();
 			
 			choice1.setText(">");
@@ -517,7 +533,7 @@ public class Juego {
 		public void goodEnding1() {
 			position = "goodEnding1";
 			
-			text = "Tu: Bien, no esperaba menos, a partir de ahora tu llevas el mando. Permiteme despedirme usando la narracion, queda mejor.";
+			text = "Tu: Bien, no esperaba menos, a partir de ahora \ntu llevas el mando. Permiteme despedirme \nusando la narracion, queda mejor.";
 			prepareText();
 			
 			choice1.setText(">");
@@ -529,7 +545,7 @@ public class Juego {
 		public void goodEnding2() {
 			position = "goodEnding2";
 			
-			text = "Tu yo desaparece y tu te quedas encerrado en esa habitación. Espero que lo hagas bien.";
+			text = "Tu yo desaparece y tu te quedas encerrado \nen esa habitación. Espero que lo hagas bien.";
 			prepareText();
 			
 			choice1.setText(">");
@@ -541,7 +557,7 @@ public class Juego {
 		public void badEnding() {
 			position = "badEnding";
 			
-			text = "Bueno, mataste a ese pobre hombre. Asi que estás fuera. Sayonara.";
+			text = "Bueno, mataste a ese pobre \nhombre. Asi que estás fuera. Sayonara.";
 			prepareText();
 			
 			choice1.setText(">");
@@ -568,23 +584,14 @@ public class Juego {
 			titleNameLabel.setText("FIN");
 		}
 		
-		public void leftWayLeft() {
-			position = "leftWayLeft";
-			
-			text = "Avanzas por esas calles estrechas y oscuras hasta que ves el letrero de una bar iluminado. Te acercas a el y entras, hay un hombre, probablemente tendrá unos 40 y algo pero parece bastante deteriorado";
-			prepareText();
-			
-			choice1.setText(">");
-			choice2.setText("");
-			choice3.setText("");
-			choice4.setText("");
-		}
-		
 		public void leftWayRight1() {
 			position = "leftWayRight1";
 			
 			text = "Avanzas y no tardas mucho en encontrarte a un señor de unos 30 años, bien vestido, parece adinerado.";
 			prepareText();
+			
+			moves--;
+			movesLabelName.setText("" + moves);
 			
 			choice1.setText(">");
 			choice2.setText("");
@@ -624,10 +631,11 @@ public class Juego {
 			text = "Hombre desconocido: Toma. \n\n<Recibes 'Estrella de oro' y 'Pocion'>";
 			prepareText();
 			
+			//Para añadir estos objetos al inventario
 			playerItem[slotNumber] = "Pocion";
 			playerItem[slotNumber+1] = "Estrella de oro";
 			
-			conversationLeftRightFinished = true;
+			conversationLeftRightFinished = true; //Variable para poder cambiar lo opcion y variar en el switch
 			
 			choice1.setText(">");
 			choice2.setText("");
@@ -635,6 +643,21 @@ public class Juego {
 			choice4.setText("");
 		}
 		
+
+		public void leftWayLeft() {
+			position = "leftWayLeft";
+			
+			text = "Avanzas por esas calles estrechas y oscuras hasta que ves el letrero de una bar iluminado. Te acercas a el y entras, hay un hombre, probablemente tendrá unos 40 y algo pero parece bastante deteriorado";
+			prepareText();
+			
+			moves--;
+			movesLabelName.setText("" + moves);
+			
+			choice1.setText(">");
+			choice2.setText("");
+			choice3.setText("");
+			choice4.setText("");
+		}
 		
 		public void conversationLeft1() {
 			position = "conversationLeft1";
@@ -665,7 +688,7 @@ public class Juego {
 		public void conversationLeft2Option1() {
 			position = "conversationLeft2Option1";
 			
-			text = "Hombre desconocido: Hey, no voy a ser yo quien arruine la sorpresa. \nBueno, tengo cosas que vas a necesitar si quieres abrir la puerta";
+			text = "Hombre desconocido: Hey, no voy a ser yo quien arruine la sorpresa. \nBueno, tengo cosas que vas a necesitar si \nquieres abrir la puerta";
 			prepareText();
 			
 			choice1.setText("Damelo");
@@ -677,7 +700,7 @@ public class Juego {
 		public void conversationLeft2Option2() {
 			position = "conversationLeft2Option2";
 			
-			text = "Hombre desconocido: Jajaja ¿Estas seguro de que quieres llevar esto así? Porque tengo cosas que necesitas y si te pones asi no vas a conseguirlo.";
+			text = "Hombre desconocido: Jajaja ¿Estas seguro de que quieres \nllevar esto así? Porque tengo cosas que necesitas y si \nte pones asi no vas a conseguirlo.";
 			prepareText();
 			
 			choice1.setText("Damelo");
@@ -690,7 +713,7 @@ public class Juego {
 			position = "conversationLeft3";
 	
 				
-			text = "Hombre desconocido: Si lo quieres tendras que pagarme una estrella de oro";
+			text = "Hombre desconocido: Si lo quieres \ntendras que pagarme una estrella de oro";
 			prepareText();
 				
 			choice1.setText("Pagar");
@@ -706,6 +729,9 @@ public class Juego {
 			text = "Hombre desconocido: ¿Ya estas de vuelta? ¿Vas a pagar ya?";
 			prepareText();
 			
+			moves--;
+			movesLabelName.setText("" + moves);
+			
 			choice1.setText("Pagar");
 			choice2.setText("Atacar");
 			choice3.setText("");
@@ -717,6 +743,7 @@ public class Juego {
 			
 			int slotNumber = 0;
 			
+			//If para comprobar si posee el objeto y cambiar lo que debe realizar en funcion de si lo tiene o no
 			if(playerItem[0] == "Estrella de oro" || playerItem[1] == "Estrella de oro" || playerItem[2] == "Estrella de oro" ||playerItem[3] == "Estrella de oro" || playerItem[4] == "Estrella de oro") {
 			
 				text = "Hombre desconocido: Buena eleccion. Aqui tienes chaval, \n\n <Recibes 'Pistola' y 'Orbe'>";
@@ -739,7 +766,7 @@ public class Juego {
 				choice4.setText("");
 			}
 			else {
-				text = "Hombre desconocido: Pero si no tienes para pagar, vuelve cuando lo tengas.";
+				text = "Hombre desconocido: Pero si no tienes para \npagar, vuelve cuando lo tengas.";
 				prepareText();
 				
 				choice1.setText(">");
@@ -766,8 +793,10 @@ public class Juego {
 		public void attackLeft2() {
 			position = "attackLeft2";
 		
-			int x = 0;
 			
+			//Bucle para cambiar la vida pero he puesto los bucles porque eran obligatorios
+			int x = 0;
+			 
 			while(x<3) {
 				text = "SIGUE PEGANDO";
 				prepareText();
@@ -826,6 +855,7 @@ public class Juego {
 		public void reward() {
 			position = "reward";
 			
+			
 			int slotNumber = 0;
 			
 			text = "Lo has matado. \n\nMiras a tu alrededor en busca de los objetos. \nEn el suelo encuentras una pistola y un orbe. \n\n<Obtienes 'Pistola' y 'Orbe'>";
@@ -857,6 +887,8 @@ public class Juego {
 			choice4.setText("");
 		}
 		
+		
+		//metodo para poner que hacer en el caso de consumir una pocion
 		public void itemUsed(int slotNumber) {
 			
 			switch(playerItem[slotNumber]) {
@@ -870,6 +902,8 @@ public class Juego {
 			}
 		}
 		
+		
+		//Accion para el boton INICIAR
 		public class TitleScreenHandler implements ActionListener{
 			
 			public void actionPerformed(ActionEvent event) {
@@ -878,6 +912,7 @@ public class Juego {
 			}
 		}
 		
+		//Accion para cada vez que se pulsa un boton de las opciones
 		public class ChoiceHandler implements ActionListener{
 			
 			public void actionPerformed(ActionEvent event) {
@@ -918,13 +953,19 @@ public class Juego {
 					break;
 				case "straightWay":
 					switch(yourChoice) {
-					case "c1": mainSquare(); break;
+					case "c1": 
+						if(moves == 0) {
+							lameEnding(); 
+						}
+						else {
+							mainSquare();
+						}
 					}
 					break;
 				case "rightWay":
 					switch(yourChoice) {
 					case "c1": 
-						if(playerHP == 0) {
+						if(playerHP == 0 || moves == 0) {
 							lameEnding();
 						}
 						else {
@@ -934,7 +975,13 @@ public class Juego {
 					break;
 				case "leftWay1":
 					switch(yourChoice) {
-					case "c1": leftWay2(); break;
+					case "c1":
+						if(moves == 0) {
+							lameEnding(); 
+						}	
+						else {
+							leftWay2();
+						}
 					}
 					break;
 				case "leftWay2":
@@ -983,12 +1030,24 @@ public class Juego {
 					break;
 				case "leftWayStraightNoItem":
 					switch(yourChoice) {
-					case "c1": leftWay4(); break;
+					case "c1": 
+						if(moves == 0) {
+							lameEnding(); 
+						}	
+						else {
+							leftWay4();
+						}
 					}
 					break;
 				case "leftWayStraightItem":
 					switch(yourChoice) {
-					case "c1": ending1(); break;
+					case "c1": 
+						if(moves == 0) {
+							lameEnding(); 
+						}	
+						else {
+							ending1();
+						}
 					}
 					break;
 				case "ending1":
@@ -1002,11 +1061,6 @@ public class Juego {
 					}
 					break;
 				case "ending3":
-					switch(yourChoice) {
-					case "c1": ending4(); break;
-					}
-					break;
-				case "ending4":
 					switch(yourChoice) {
 					case "c1": 
 						if(option == true) {
@@ -1046,12 +1100,24 @@ public class Juego {
 					break;
 				case "leftWayLeft":
 					switch(yourChoice) {
-					case "c1": conversationLeft1(); break;
+					case "c1": 
+						if(moves == 0) {
+							lameEnding(); 
+						}	
+						else {
+							conversationLeft1();
+						}
 					}
 					break;
 				case "conversationLeft1":
 					switch(yourChoice) {
-					case "c1": conversationLeft2(); break;
+					case "c1": 
+						if(moves == 0) {
+							lameEnding(); 
+						}	
+						else {
+							conversationLeft2();
+						}
 					}
 					break;
 				case "conversationLeft2":
@@ -1116,6 +1182,9 @@ public class Juego {
 				case "attackLeft4":
 					switch(yourChoice) {
 					case "c1": reward(); break;
+					case "c2": reward(); break;
+					case "c3": reward(); break;
+					case "c4": reward(); break;
 					}
 					break;
 				case "reward":
@@ -1130,7 +1199,13 @@ public class Juego {
 					break;
 				case "leftWayRight1":
 					switch(yourChoice) {
-					case "c1": leftWayRight2(); break;
+					case "c1":
+						if(moves == 0) {
+							lameEnding(); 
+						}	
+						else {
+							leftWayRight2();
+						}
 					}
 					break;
 				case "leftWayRight2":
@@ -1159,6 +1234,7 @@ public class Juego {
 			
 		}
 		
+		//Accion para comprobar si se ha pulsado el boton inventario y si se ha pulsado uno de los botones del inventario
 		public class InventoryHandler implements ActionListener{
 			
 			public void actionPerformed(ActionEvent event) {
@@ -1212,4 +1288,4 @@ public class Juego {
 			}
 		}
 		
-	}
+		}
